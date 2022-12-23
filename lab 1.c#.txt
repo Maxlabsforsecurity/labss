@@ -1,0 +1,74 @@
+//создати псевдовипадкові числа
+using System;
+
+public class Program_Random
+{
+    public static void Main()
+    {
+        Console.WriteLine("Введите seed number: ");
+        int seed = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("Сколько чисел сгенерировать:");
+        int am = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("Введи наименьшее число:");
+        int min = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("Введи наибольшое:");
+        int max = Convert.ToInt32(Console.ReadLine());
+
+        if (max > min)
+        {
+            int c = 1;
+            Random rnd = new Random(seed);
+            Console.WriteLine("Random generated number sequence:");
+            for (int i = 0; i < am; i++)
+            {
+                Console.WriteLine("{0,3}", c + ". " + rnd.Next(min, max)); //{0,3} -> format
+                c++;
+            }
+        }
+        else
+        {
+            Console.WriteLine("{0,9}", "!!!");
+            Console.WriteLine("Ошибка:Ти ввел неправильные числа ,введи ише раз");
+        }
+        Console.ReadLine();
+    }
+}
+
+//Тут шоб  вона була криптографічно стійка
+using System.Security.Cryptography;
+
+
+class Random_Crypto
+{
+    public static void Main()
+    {
+        int c = 1;
+        Console.WriteLine("Сколько чисел сгенерировать:");
+        int am = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("Рандомная генерация чисел:");
+
+        for (int i = 0; i < am; i++)
+        {
+            var rnd = GenerateRandomNumber();
+            //Console.WriteLine(c + ".");
+            Console.WriteLine(Convert.ToBase64String(rnd));
+            c++;
+        }
+        Console.ReadLine();
+    }
+
+    public static byte[] GenerateRandomNumber()
+    {
+        using (var randomNumberGenerator = RandomNumberGenerator.Create())
+        {
+            int bit = 64;
+            var randomNumber = new byte[bit];
+            randomNumberGenerator.GetBytes(randomNumber);
+            return randomNumber;
+        }
+    }
+}
